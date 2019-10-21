@@ -44,6 +44,7 @@ class HashTable:
 
         pos = self.hash(key)
         quadratic_counter = 0
+        og_pos = pos
 
         for _ in range (self.table_size):
             if self.table[pos] is None:
@@ -53,6 +54,7 @@ class HashTable:
                 return self.table[pos][1]
             else:
                 quadratic_counter += 1
+                pos = og_pos
                 pos = (pos + (quadratic_counter ** 2)) % self.table_size
 
         raise KeyError("key not found")
@@ -115,6 +117,7 @@ class HashTable:
 
         pos = self.hash(key)
         quadratic_counter = 0
+        og_pos = pos
 
         for _ in range (self.table_size):
             if self.table[pos] is None:
@@ -123,6 +126,7 @@ class HashTable:
                 return True
             else:
                 quadratic_counter += 1
+                pos = og_pos
                 pos = (pos + (quadratic_counter ** 2)) % self.table_size
         
         return False
@@ -167,20 +171,23 @@ class HashTable:
 
         self.table_size = new_table_size
         new_table = [None] * self.table_size
-        quadratic_counter = 0
 
-        for key, value in self.table:
-            pos = self.hash(key)
-            for i in range (self.table_size):
-                if new_table[pos] is None:
-                    new_table[pos]=(key, value)
-                    break
-                elif new_table[pos][0] == key:
-                    new_table[pos]=(key, value)
-                    break
-                else:
-                    quadratic_counter += 1
-                    pos = (pos + (quadratic_counter ** 2)) % self.table_size 
+        for tuple in self.table:
+            if tuple is not None:
+                pos = self.hash(tuple[0])
+                quadratic_counter = 0
+                og_pos = pos
+                for i in range (self.table_size):
+                    if new_table[pos] is None:
+                        new_table[pos]=(tuple[0], tuple[1])
+                        break
+                    elif new_table[pos][0] == tuple[0]:
+                        new_table[pos]=(tuple[0], tuple[1])
+                        break
+                    else:
+                        quadratic_counter += 1
+                        pos = og_pos
+                        pos = (pos + (quadratic_counter ** 2)) % self.table_size 
 
         return new_table
                                

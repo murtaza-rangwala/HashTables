@@ -10,8 +10,17 @@ import math
 import csv
 
 class HashTable:
-
+  '''
+  This class represents a hash table
+  '''
   def __init__(self, table_capacity = 1103, hash_base = 29):
+    '''
+    This function initializes all the instance variables of this class
+    @complexity:    Best Case: O(1) / Worst Case: O(1)
+    @input:         table_capacity: size of table
+                    hash_base: base value of the hash function
+    @return:        None
+    '''
     self.table = [None] * table_capacity
     self.table_size = table_capacity
     self.count = 0
@@ -23,12 +32,25 @@ class HashTable:
     self.rehash_count = 0
 
   def hash_function(self, key):
+    '''
+    This function hashes a String Key to an index value in the table
+    @complexity:    Best Case: O(N) / Worst Case: O(N) where N is the length of the key string
+    @input:         key: key from the key value pairs stored in the Hash Table
+    @returns:       value: index (integer) value of the String
+    '''
     value = 0
     for i in range(len(key)):
       value = ((value * self.base) + ord(key[i])) % self.table_size
     return value
 
   def __setitem__(self, key, data):
+    '''
+    This function allows the user to set the value corresponding to a key
+    @complexity:    Best Case: O(1) / Worst Case: O(table_size)
+    @input:         key: key from the key value pairs stored in the Hash Table
+                    value: value to be set for input key
+    @return:        None
+    '''
     pos = self.hash_function(key)
 
     if self.table[pos] is None:
@@ -56,6 +78,13 @@ class HashTable:
         return
     
   def __getitem__(self, key):
+    '''
+    This function allows a user to access a value from the hash table using the key
+    @complexity:    Best Case: O(1) / Worst Case: O(table_size)
+    @input:         key: key from the key value pairs stored in the Hash Table
+    @return:        value corresponding to the input key
+    @pre-condition: input key should be valid    
+    '''
     pos = self.hash_function(key)
 
     if self.table[pos] is None:
@@ -176,4 +205,4 @@ def table_load_dictionary_statistics(max_time):
                         writer = csv.writer(csvFile)
                         writer.writerow([name, words, round(time, 2), collisions, probe_length, probe_max, rehashes])
 
-table_load_dictionary_statistics(120)
+#table_load_dictionary_statistics(120)

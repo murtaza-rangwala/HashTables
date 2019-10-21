@@ -164,17 +164,18 @@ class HashTable:
         new_table = [None] * self.table_size
         
 
-        for key, value in self.table:
-            pos = self.hash(key)
-            for i in range (self.table_size):
-                if new_table[pos] is None:
-                    new_table[pos]=(key, value)
-                    break
-                elif new_table[pos][0] == key:
-                    new_table[pos]=(key, value)
-                    break
-                else:
-                    pos = (pos + 1) % self.table_size 
+        for tuple in self.table:
+            if tuple is not None:
+                pos = self.hash(tuple[0])
+                for i in range (self.table_size):
+                    if new_table[pos] is None:
+                        new_table[pos]=(tuple[0], tuple[1])
+                        break
+                    elif new_table[pos][0] == tuple[0]:
+                        new_table[pos]=(tuple[0], tuple[1])
+                        break
+                    else:
+                        pos = (pos + 1) % self.table_size 
 
         return new_table
                                
