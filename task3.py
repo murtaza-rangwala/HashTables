@@ -41,13 +41,14 @@ class HashTable:
         if not isinstance(key, str):
             raise TypeError("Key is not a String")
 
+        # Calling the hash function to hash the key
         pos = self.hash(key)
 
         for _ in range (self.table_size):
-            if self.table[pos] is None:
+            if self.table[pos] is None:             # If that key does not exist in the table
                 raise KeyError("key not found")
                 return
-            elif self.table[pos][0] == key:
+            elif self.table[pos][0] == key:         # if key exits at hashed position
                 return self.table[pos][1]
             else:
                 pos = (pos + 1) % self.table_size
@@ -66,18 +67,18 @@ class HashTable:
         if not isinstance(key, str):
             raise TypeError("Key is not a String")
 
-        pos = self.hash(key)
+        pos = self.hash(key)                    # Calling the hash function to hash the key
         collisionOccured = False
         probe_length = 0
         isSuccessful = False
 
         for _ in range (self.table_size):
-            if self.table[pos] is None:
+            if self.table[pos] is None:         # If that key does not exist in the table
                 self.table[pos]=(key, value)
                 self.count += 1
                 isSuccessful = True 
                 break
-            elif self.table[pos][0] == key:
+            elif self.table[pos][0] == key:     # if key exits at hashed position
                 self.table[pos]=(key, value)
                 isSuccessful = True 
                 break
@@ -271,4 +272,4 @@ def table_load_dictionary_statistics(max_time):
                         writer = csv.writer(csvFile)
                         writer.writerow([name, words, round(time, 2), collisions, probe_length, probe_max, rehashes])
 
-table_load_dictionary_statistics(120)
+#table_load_dictionary_statistics(120)
