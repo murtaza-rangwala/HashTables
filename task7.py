@@ -66,9 +66,8 @@ class Freq:
         @input:         word: word under consideration
         @returns:       Rarity score (common word = 0, uncommon word = 1, rare word = 2, error = 3)
         '''
-        occurences = self.word_frequency[word]
-
         if word in self.word_frequency:
+            occurences = self.word_frequency[word]
             if occurences >= (self.max / 100):
                 return 0
             elif occurences >= (self.max / 1000) and occurences < (self.max / 100):
@@ -99,17 +98,23 @@ class Freq:
             for word in l:
                 words.append(word)
 
+        finished_words = HashTable()
+
         for word in words:
-            score = self.rarity(word)
+
+            if not(word in finished_words):
+                score = self.rarity(word)
             
-            if score == 0:
-                rarity_list[0] += 1
-            elif score == 1:
-                rarity_list[1] += 1
-            elif score == 2:
-                rarity_list[2] += 1
-            else:
-                rarity_list[3] += 1
+                if score == 0:
+                    rarity_list[0] += 1
+                elif score == 1:
+                    rarity_list[1] += 1
+                elif score == 2:
+                    rarity_list[2] += 1
+                else:
+                    rarity_list[3] += 1
+
+                finished_words[word] = "Done"
 
         total = sum(rarity_list)
 
